@@ -2,7 +2,7 @@
 name = "vmir"
 version = "0.1.0"
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Farish Irfan <farish_irfan.0905@yahoo.com>"]
 
 [dependencies]
+derive_more = "0.99.7"
