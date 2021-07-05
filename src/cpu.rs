@@ -1,7 +1,5 @@
 use derive_more::{Add, Sub};
 
-// DEBUG
-#[allow(dead_code)]
 #[derive(Debug, Copy, Clone, PartialOrd, PartialEq, Add, Sub)]
 pub enum Immediate {
     None(),
@@ -20,8 +18,6 @@ pub enum Immediate {
 pub type Reg = usize;
 pub type Adr = usize;
 
-// DEBUG
-#[allow(dead_code)]
 #[derive(Debug, Clone, Copy)]
 pub enum Instruction {
     NOP(),

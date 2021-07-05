@@ -2,8 +2,6 @@ use std::convert::TryInto;
 use std::mem;
 use super::cpu;
 
-// DEBUG
-#[allow(dead_code)]
 pub struct VM {
     ip: cpu::Adr,
     flag_eq: bool,
@@ -123,8 +121,6 @@ impl VM {
         }
     }
 
-    // DEBUG
-    #[allow(dead_code)]
     pub fn decode(&mut self) -> cpu::Instruction {
         match self.code[self.ip] {
             0 => {
