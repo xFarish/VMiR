@@ -1,5 +1,9 @@
+use std::convert::TryInto;
+use std::mem;
 use super::cpu;
 
+// DEBUG
+#[allow(dead_code)]
 pub struct VM {
     ip: cpu::Adr,
     flag_eq: bool,
@@ -12,6 +16,8 @@ pub struct VM {
 }
 
 impl VM {
+    // DEBUG
+    #[allow(dead_code)]
     pub fn new(code: Vec<u8>, heap_capacity: usize) -> VM {
         VM {
             ip: 0,
@@ -25,6 +31,8 @@ impl VM {
         }
     }
 
+    // DEBUG
+    #[allow(dead_code)]
     pub fn decode_immediate(&mut self) -> cpu::Immediate {
         self.ip += 1;
 
@@ -32,9 +40,96 @@ impl VM {
             0 => {
                 self.ip += 1;
                 cpu::Immediate::U8(self.code[self.ip] as u8)
-            }
+            },
+
+            1 => {
+                self.ip += 1;
+                cpu::Immediate::I8(self.code[self.ip] as i8)
+            },
+
+            2 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = u16::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::U16(value)
+            },
+
+            3 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = i16::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::I16(value)
+            },
+
+            4 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = u32::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::U32(value)
+            },
+
+            5 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = i32::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::I32(value)
+            },
+
+            6 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = u64::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::U64(value)
+            },
+
+            7 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = i64::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::I64(value)
+            },
+
+            8 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = f32::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::F32(value)
+            },
+
+            9 => {
+                self.ip += 1;
+                let size = mem::size_of::<i16>();
+                let value = f64::from_le_bytes(self.code[self.ip..][..size].try_into().unwrap());
+                self.ip += 1 - size;
+
+                cpu::Immediate::F64(value)
+            },
 
             _ => cpu::Immediate::None()
+        }
+    }
+
+    // DEBUG
+    #[allow(dead_code)]
+    pub fn decode(&mut self) -> cpu::Instruction {
+        match self.code[self.ip] {
+            0 => cpu::Instruction::NOP(),
+            // ...
+            _ => cpu::Instruction::NOP()
         }
     }
 }
