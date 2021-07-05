@@ -13,7 +13,6 @@ def print_info() -> None:
     info(23, 'src/cpu.rs')
     info(5, 'src/vm.rs')
     info(19, 'src/vm.rs')
-    info(34, 'src/vm.rs')
     info(126, 'src/vm.rs')
 
 def find_exec(name: str) -> bool:

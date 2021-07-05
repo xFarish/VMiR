@@ -31,8 +31,6 @@ impl VM {
         }
     }
 
-    // DEBUG
-    #[allow(dead_code)]
     pub fn decode_immediate(&mut self) -> cpu::Immediate {
         self.ip += 1;
 
@@ -119,7 +117,9 @@ impl VM {
                 cpu::Immediate::F64(value)
             },
 
-            _ => cpu::Immediate::None()
+            _ => {
+                cpu::Immediate::None()
+            }
         }
     }
 
@@ -127,9 +127,35 @@ impl VM {
     #[allow(dead_code)]
     pub fn decode(&mut self) -> cpu::Instruction {
         match self.code[self.ip] {
-            0 => cpu::Instruction::NOP(),
-            // ...
-            _ => cpu::Instruction::NOP()
+            0 => {
+                cpu::Instruction::NOP()
+            },
+
+            1 => {
+                self.ip += 1;
+                let register = self.code[self.ip] as cpu::Reg;
+                let var = self.decode_immediate();
+
+                cpu::Instruction::MOV(register, var)
+            },
+
+            2 => {
+                let register = (self.code[self.ip + 1] as cpu::Reg, self.code[self.ip + 2] as cpu::Reg);
+                self.ip += 2;
+
+                cpu::Instruction::MOVR(register.0, register.1)
+            },
+
+            3 => {
+                self.ip += 1;
+                let register = self.code[self.ip] as cpu::Reg;
+
+                cpu::Instruction::JMP(register)
+            }
+            
+            _ => {
+                cpu::Instruction::NOP()
+            }
         }
     }
 }
